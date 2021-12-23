@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<?xml-stylesheet href="./c74ref.xsl" type="text/xsl"?>
+
+<c74object name='lx.dmx.read'>
+
+	<digest>Read raw DMX data from one or more consecutive LXMax input universes</digest>
+	<description>
+		
+	</description>
+
+
+	<!--METADATA-->
+
+	<metadatalist>
+		<metadata name='author'>Pixsper</metadata>
+		<metadata name='tag'>lxmax</metadata>
+		<metadata name='tag'>lighting</metadata>
+		<metadata name='tag'>dmx</metadata>
+	</metadatalist>
+
+
+	<!--ARGUMENTS-->
+
+	<objarglist>
+	
+	</objarglist>
+
+
+	<!--MESSAGES-->
+
+	<methodlist>
+	
+		
+	</methodlist>
+
+
+	<!--ATTRIBUTES-->
+
+	<attributelist>
+
+	</attributelist>
+
+
+	<!--RELATED-->
+
+	<seealsolist>
+	</seealsolist>
+
+
+</c74object>
