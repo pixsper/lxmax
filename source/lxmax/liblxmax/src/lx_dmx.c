@@ -1,9 +1,9 @@
-// Copyright (c) 2021 Pixsper Ltd. All rights reserved.
+// Copyright (c) 2023 Pixsper Ltd. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 
-#include "dmx.h"
+#include "lx_dmx.h"
 
-#include <regex>
+#include "lx_helpers.h"
 
 t_symbol* lx_dmx_universe_to_artnet_format(t_atom_long address)
 {
@@ -12,44 +12,50 @@ t_symbol* lx_dmx_universe_to_artnet_format(t_atom_long address)
 	const t_atom_long universe = address & 0x000F;
 
 	char buffer[16];
-	snprintf(buffer, sizeof(buffer), "%ld.%ld.%ld", net, subnet, universe);
+	snprintf(buffer, sizeof(buffer), "%03lld.%02lld.%02lld", net, subnet, universe);
 
 	return gensym(buffer);
 }
 
 t_max_err lx_dmx_universe_from_artnet_format(t_symbol* s, t_atom_long* address)
 {
-	const std::regex artnet_universe_regex(R"((?:(\d+)[^\d]+)(?:(\d+)[^\d]+)(\d+))");
+	const char* artnet_universe_regex = "(?:(\\d+)[^\\d]+)(?:(\\d+)[^\\d]+)(\\d+)";
 
-	std::cmatch matches;
-	if (std::regex_match(s->s_name, matches, artnet_universe_regex))
+	long matches_count = 0;
+	t_symbol** matches = NULL;
+	if (lx_helpers_regex_matches(s, artnet_universe_regex, &matches_count, &matches) == MAX_ERR_NONE)
 	{
-		int net = 0;
-		int subnet = 0;
+		int net;
+		int subnet;
 		int universe;
 
-		switch (matches.size())
+		switch (matches_count)
 		{
 			case 2:
-				universe = strtol(matches[1].str().c_str(), nullptr, 10);
+				universe = strtol(matches[1]->s_name, NULL, 10);
+				*address = universe;
 				break;
 
 			case 3:
-				subnet = strtol(matches[1].str().c_str(), nullptr, 10);
-				universe = strtol(matches[2].str().c_str(), nullptr, 10);
+				subnet = strtol(matches[1]->s_name, NULL, 10);
+				universe = strtol(matches[2]->s_name, NULL, 10);
+				*address = (subnet << 4) + universe;
 				break;
 
 			case 4:
-				net = strtol(matches[1].str().c_str(), nullptr, 10);
-				subnet = strtol(matches[2].str().c_str(), nullptr, 10);
-				universe = strtol(matches[3].str().c_str(), nullptr, 10);
+				net = strtol(matches[1]->s_name, NULL, 10);
+				subnet = strtol(matches[2]->s_name, NULL, 10);
+				universe = strtol(matches[3]->s_name, NULL, 10);
+				*address = (net << 8) + (subnet << 4) + universe;
 				break;
 
 			default:
-				return false;
+				break;
 		}
 
-		*address = (net << 8) + (subnet << 4) + universe;
+		if (matches)
+			sysmem_freeptr(matches);
+
 		return MAX_ERR_NONE;
 	}
 	else

@@ -9,6 +9,7 @@ include_directories(
 
 set(PROJECT_SRC
 		"lx.dmx.write.c"
+		"${LXMAX_COMMON_INCLUDES}/lx_common_syms.c"
 		"${MAX_SDK_INCLUDES}/common/commonsyms.c"
 )
 

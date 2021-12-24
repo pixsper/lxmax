@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Pixsper Ltd. All rights reserved.
+// Copyright (c) 2023 Pixsper Ltd. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 
 #pragma once
@@ -8,8 +8,8 @@
 #include <string>
 #include <algorithm>
 
-#include "dmx.hpp"
-#include "net.hpp"
+#include "lx_dmx.h"
+#include "lx_net.h"
 #include "endian_ints.hpp"
 
 namespace lxmax
@@ -59,7 +59,7 @@ namespace lxmax
 
 
 
-	inline void get_sacn_multicast_address(const universe_address& address, t_lx_ip_address* multicast_ip)
+	inline void get_sacn_multicast_address(const t_universe_address& address, t_lx_ip_address* multicast_ip)
 	{
 		multicast_ip->data[0] = 239;
 		multicast_ip->data[1] = 255;
@@ -194,8 +194,8 @@ namespace lxmax
 		sacn_dmp_layer dmp_layer;
 		std::vector<uint8_t> dmx_channels;
 
-		dmx_packet_sacn(const t_lx_uuid system_id, const std::string& source_name, uint8_t priority, universe_address sync_address,
-			uint8_t sequence, sacn_options_flags options, universe_address universe, const universe_buffer& data)
+		dmx_packet_sacn(const t_lx_uuid system_id, const std::string& source_name, uint8_t priority, t_universe_address sync_address,
+			uint8_t sequence, sacn_options_flags options, t_universe_address universe, const std::array<t_dmx_value, 512>& data)
 			: root_layer(system_id, sacn_root_vector::e131_data),
 			framing_layer(source_name, priority, sync_address, sequence, options, universe),
 			dmx_channels(data.size())
@@ -205,7 +205,7 @@ namespace lxmax
 			dmp_layer.set_length(data.size());
 			dmp_layer.set_channel_count(dmx_channels.size());
 
-			memcpy(dmx_channels.data(), data.data(), std::min(data.size(), dmx_channels.size()));
+			memcpy(dmx_channels.data(), data.data(), MIN(data.size(), dmx_channels.size()));
 		}
 
 		static bool deserialize(char* data, size_t length, dmx_packet_sacn& packet)
@@ -262,7 +262,7 @@ namespace lxmax
 		sacn_root_layer root_layer;
 		sacn_framing_layer_sync framing_layer;
 
-		sync_packet_sacn(const t_lx_uuid system_id, uint8_t sequence, universe_address sync_address)
+		sync_packet_sacn(const t_lx_uuid system_id, uint8_t sequence, t_universe_address sync_address)
 			: root_layer(system_id, sacn_root_vector::e131_extended),
 			framing_layer(sequence, sync_address)
 		{

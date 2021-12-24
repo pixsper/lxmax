@@ -1,9 +1,8 @@
-// Copyright (c) 2021 Pixsper Ltd. All rights reserved.
+// Copyright (c) 2023 Pixsper Ltd. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 
 #include <ext.h> 
 #include <ext_obex.h>
-#include <ext_globalsymbol.h>
 
 #include "lxmax.h"
 
@@ -24,7 +23,7 @@ void lx_dmx_write_assist(t_lx_dmx_write* x, void* b, long m, long a, char* s);
 void ext_main(void* r)
 {
 	common_symbols_init();
-	lx_sym_init();
+	lx_common_symbols_init();
 
 	t_class* c;
 
@@ -46,10 +45,9 @@ void* lx_dmx_write_new(t_symbol* s, long argc, t_atom* argv)
 	if (x == NULL)
 		return NULL;
 
-	x->service = (t_lx_service*)globalsymbol_reference((t_object*)x, LX_SERVICE_SYMBOL_NAME, LX_SERVICE_CLASS_NAME);
-	if (x->service == NULL)
+	x->service = lx_service_subscribe((t_object*)x);
+	if (!x->service)
 	{
-		object_error((t_object*)x, "Failed to find active LXMax service");
 		object_free(x);
 		return NULL;
 	}
@@ -59,7 +57,7 @@ void* lx_dmx_write_new(t_symbol* s, long argc, t_atom* argv)
 
 void lx_dmx_write_free(t_lx_dmx_write* x)
 {
-	globalsymbol_dereference((t_object*)x, LX_SERVICE_SYMBOL_NAME, LX_SERVICE_CLASS_NAME);
+	lx_service_unsubscribe((t_object*)x, x->service);
 }
 
 void lx_dmx_write_assist(t_lx_dmx_write* x, void* b, long m, long a, char* s)

@@ -1,10 +1,9 @@
-// Copyright (c) 2021 Pixsper Ltd. All rights reserved.
+// Copyright (c) 2023 Pixsper Ltd. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 
 #include <ext.h>
 #include <ext_obex.h>
 #include <ext_dictobj.h>
-#include <ext_globalsymbol.h>
 #include <commonsyms.h>
 #include <jdataview.h>
 
@@ -12,11 +11,12 @@
 
 typedef enum _column_kind
 {
-	COLUMN_TEXT,
-	COLUMN_TEXT_LIST,
-	COLUMN_TOGGLE,
-	COLUMN_MENU,
-	COLUMN_INTEGER
+	LX_CONFIG_UI_COLUMN_TEXT,
+	LX_CONFIG_UI_COLUMN_TEXT_LIST,
+	LX_CONFIG_UI_COLUMN_TOGGLE,
+	LX_CONFIG_UI_COLUMN_MENU,
+	LX_CONFIG_UI_COLUMN_INTEGER,
+	LX_CONFIG_UI_COLUMN_STATIC
 
 } e_lx_config_ui_column_kind;
 
@@ -26,8 +26,10 @@ typedef struct _lx_config_ui
 	t_lx_service* service;
 
 	t_object* dataview;
+	t_object* patcherview;
 
-	t_lx_universe_config* selected_row;
+	t_symbol* selected_row;
+	t_bool is_disable_external_refresh;
 
 } t_lx_config_ui;
 
@@ -41,14 +43,13 @@ void lx_config_ui_free_patcherview(t_lx_config_ui* x, t_object* patcherview);
 
 t_max_err lx_config_ui_notify(t_lx_config_ui* x, t_symbol* s, t_symbol* msg, void* sender, void* data);
 
-
 void lx_config_ui_add_universe(t_lx_config_ui* x);
 void lx_config_ui_remove_universe(t_lx_config_ui* x);
-void lx_config_ui_clear_universes(t_lx_config_ui* x);
 
 void lx_config_ui_get_cell_text(t_lx_config_ui* x, t_symbol* col_name, t_rowref rr, char* text, long max_length);
 void lx_config_ui_get_cell_value(t_lx_config_ui* x, t_symbol* col_name, t_rowref rr, long* argc, t_atom* argv);
-void lx_config_ui_get_cell_menu(t_lx_config_ui* x, t_symbol* col_name, t_rowref rr, long* argc, t_atom* argv, char** enabled, long* current_item_index);
+void lx_config_ui_get_cell_menu(t_lx_config_ui* x, t_symbol* col_name, t_rowref rr, long* argc, t_atom* argv,
+								char** enabled, long* current_item_index);
 void lx_config_ui_set_value(t_lx_config_ui* x, t_symbol* col_name, t_rowref rr, long argc, t_atom* argv);
 void lx_config_ui_selected_row(t_lx_config_ui* x, t_rowref* rr);
 
@@ -58,14 +59,15 @@ void lx_config_ui_text_component(t_object* x, t_symbol* col_name, t_rowref rr, l
 void lx_config_ui_text_list_component(t_object* x, t_symbol* col_name, t_rowref rr, long* comp_type, long* options, t_symbol** label);
 void lx_config_ui_integer_component(t_object* x, t_symbol* col_name, t_rowref rr, long* comp_type, long* options, t_symbol** label);
 
-void lx_config_ui_add_column(t_lx_config_ui* x, t_symbol* name, t_symbol* label, long width, e_lx_config_ui_column_kind kind);
+void lx_config_ui_add_column(t_lx_config_ui* x, t_symbol* name, t_symbol* label, long width,
+							 e_lx_config_ui_column_kind kind, t_bool is_numeric);
 void lx_config_ui_refresh_data(t_lx_config_ui* x);
 
 
 void ext_main(void* r)
 {
 	common_symbols_init();
-	lx_sym_init();
+    lx_common_symbols_init();
 
 	t_class* c = class_new("lx.config.ui", (method)lx_config_ui_new, (method)lx_config_ui_free, sizeof(t_lx_config_ui), 
 		(method)NULL,A_GIMME, 0);
@@ -80,7 +82,6 @@ void ext_main(void* r)
 
 	class_addmethod(c, (method)lx_config_ui_add_universe, "add_universe", 0);
 	class_addmethod(c, (method)lx_config_ui_remove_universe, "remove_universe", 0);
-	class_addmethod(c, (method)lx_config_ui_clear_universes, "clear_universes", 0);
 
 	class_addmethod(c, (method)lx_config_ui_get_cell_text, "getcelltext", A_CANT, 0);
 	class_addmethod(c, (method)lx_config_ui_get_cell_value, "getcellvalue", A_CANT, 0);
@@ -111,15 +112,6 @@ void* lx_config_ui_new(t_symbol* s, short argc, t_atom* argv)
 	if (x == NULL)
 		return NULL;
 
-	x->service = (t_lx_service*)globalsymbol_reference((t_object*)x, LX_SERVICE_SYMBOL_NAME, LX_SERVICE_CLASS_NAME);
-	if (x->service == NULL)
-	{
-		object_error((t_object*)x, "Failed to find active LXMax service");
-		object_free(x);
-		return NULL;
-	}
-	object_attach_byptr(x, x->service);
-
 	const long flags = 0
 			| JBOX_DRAWFIRSTIN
 			| JBOX_NODRAWBOX
@@ -130,36 +122,60 @@ void* lx_config_ui_new(t_symbol* s, short argc, t_atom* argv)
 	jbox_new(&x->box, flags, argc, argv);
 	x->box.b_firstin = (t_object*)x;
 
+
 	x->dataview = (t_object*)jdataview_new();
 	jdataview_setclient(x->dataview, (t_object*)x);
 	jdataview_setcolumnheaderheight(x->dataview, 40);
 	jdataview_setheight(x->dataview, 16);
+	x->patcherview = NULL;
 
-	lx_config_ui_add_column(x, _lxsym_universe_config_label, gensym("Label"), 200, COLUMN_TEXT);
-	lx_config_ui_add_column(x, _lxsym_universe_config_type, gensym("Type"), 70, COLUMN_MENU);
-	lx_config_ui_add_column(x, _lxsym_universe_config_enable, gensym("On"), 40, COLUMN_TOGGLE);
-	lx_config_ui_add_column(x, _lxsym_universe_config_protocol, gensym("Protocol / Device"), 100, COLUMN_MENU);
-	lx_config_ui_add_column(x, _lxsym_universe_config_protocol_mode, gensym("Mode"), 100, COLUMN_MENU);
-	lx_config_ui_add_column(x, _lxsym_universe_config_internal_universe, gensym("Internal Universe"), 100, COLUMN_INTEGER);
-	lx_config_ui_add_column(x, _lxsym_universe_config_protocol_universe, gensym("Protocol Universe"), 100, COLUMN_INTEGER);
-	lx_config_ui_add_column(x, _lxsym_universe_config_priority, gensym("Priority"), 70, COLUMN_INTEGER);
-	lx_config_ui_add_column(x, _lxsym_universe_config_protocol_interface, gensym("Interface"), 200, COLUMN_MENU);
-	lx_config_ui_add_column(x, _lxsym_universe_config_unicast_addresses, gensym("Destination Addresses"), 200, COLUMN_TEXT_LIST);
+	x->service = lx_service_subscribe((t_object*)x);
+	if (!x->service)
+	{
+		object_free(x);
+		return NULL;
+	}
+
+	lx_config_ui_add_column(x, _lxsym_universe_config_label, gensym("Label"),
+	                        200, LX_CONFIG_UI_COLUMN_TEXT, false);
+	lx_config_ui_add_column(x, _lxsym_universe_config_type, gensym("Type"),
+	                        70, LX_CONFIG_UI_COLUMN_MENU, false);
+	lx_config_ui_add_column(x, _lxsym_universe_config_enable, gensym("On"),
+	                        40, LX_CONFIG_UI_COLUMN_TOGGLE, true);
+	lx_config_ui_add_column(x, _lxsym_universe_config_status, gensym("Status"),
+	                        60, LX_CONFIG_UI_COLUMN_STATIC, true);
+	lx_config_ui_add_column(x, _lxsym_universe_config_protocol, gensym("Protocol / Device"),
+	                        100, LX_CONFIG_UI_COLUMN_MENU, false);
+	lx_config_ui_add_column(x, _lxsym_universe_config_protocol_mode, gensym("Mode"),
+	                        100, LX_CONFIG_UI_COLUMN_MENU, false);
+	lx_config_ui_add_column(x, _lxsym_universe_config_internal_universe, gensym("Internal Universe"),
+	                        100, LX_CONFIG_UI_COLUMN_INTEGER, true);
+	lx_config_ui_add_column(x, _lxsym_universe_config_protocol_universe, gensym("Protocol Universe"),
+	                        100, LX_CONFIG_UI_COLUMN_INTEGER, true);
+	lx_config_ui_add_column(x, _lxsym_universe_config_priority, gensym("Priority"),
+	                        60, LX_CONFIG_UI_COLUMN_INTEGER, false);
+	lx_config_ui_add_column(x, _lxsym_universe_config_protocol_interface, gensym("Interface"),
+	                        150, LX_CONFIG_UI_COLUMN_MENU, false);
+	lx_config_ui_add_column(x, _lxsym_universe_config_unicast_addresses, gensym("Destination Addresses"),
+	                        200, LX_CONFIG_UI_COLUMN_TEXT_LIST, false);
 
 	attr_dictionary_process(x, d);
 
 	x->selected_row = NULL;
+	x->is_disable_external_refresh = false;
 
 	lx_config_ui_refresh_data(x);
 
 	jbox_ready(&x->box);
+
+	jdataview_resort(x->dataview);
+
 	return x;
 }
 
 void lx_config_ui_free(t_lx_config_ui* x)
 {
-	object_detach_byptr(x, x->service);
-	globalsymbol_dereference((t_object*)x, LX_SERVICE_SYMBOL_NAME, LX_SERVICE_CLASS_NAME);
+	lx_service_unsubscribe((t_object*)x, x->service);
 
 	jbox_free(&x->box);
 	object_free(x->dataview);
@@ -169,11 +185,13 @@ void lx_config_ui_free(t_lx_config_ui* x)
 
 void lx_config_ui_new_patcherview(t_lx_config_ui* x, t_object* patcherview)
 {
+	x->patcherview = patcherview;
 	jdataview_patchervis(x->dataview, patcherview, (t_object*)x);
 }
 
 void lx_config_ui_free_patcherview(t_lx_config_ui* x, t_object* patcherview)
 {
+	x->patcherview = NULL;
 	jdataview_patcherinvis(x->dataview, patcherview);
 }
 
@@ -182,7 +200,9 @@ t_max_err lx_config_ui_notify(t_lx_config_ui* x, t_symbol* s, t_symbol* msg, voi
 {
 	if (sender == x->service && msg == _lxsym_service_notify_universes_updated)
 	{
-		lx_config_ui_refresh_data(x);
+		if (!x->is_disable_external_refresh)
+			lx_config_ui_refresh_data(x);
+
 		return MAX_ERR_NONE;
 	}
 	else
@@ -193,36 +213,51 @@ t_max_err lx_config_ui_notify(t_lx_config_ui* x, t_symbol* s, t_symbol* msg, voi
 
 void lx_config_ui_add_universe(t_lx_config_ui* x)
 {
-	if (x->selected_row)
+	x->is_disable_external_refresh = true;
+
+	t_lx_universe_config* base_config = NULL;
+	if (!x->selected_row || hashtab_lookup(x->service->universes, (t_symbol*)x->selected_row, (t_object**)&base_config) != MAX_ERR_NONE)
 	{
-		const long index = linklist_objptr2index(x->service->universes, x->selected_row);
-		lxmax_service_universes_add(x->service, lx_universe_config_new(x->service, NULL), index);
+		t_symbol* name = lx_helpers_hashtab_get_last(x->service->universes, _lxsym_universe_config_internal_universe);
+		hashtab_lookup(x->service->universes, name, (t_object**)&base_config);
 	}
-	else
-	{
-		lxmax_service_universes_add(x->service, lx_universe_config_new(x->service, NULL), -1);
-	}
+
+	t_lx_universe_config* config = lx_universe_config_clone(x->service, base_config);
+	if (base_config)
+		lx_universe_config_increment(config, 1);
+
+	lx_service_universes_add(x->service, config);
+
+	jdataview_addrow(x->dataview, config->name);
+	jdataview_selectcellinview(x->dataview, x->patcherview, _lxsym_universe_config_label, config->name);
+
+	x->is_disable_external_refresh = false;
 }
 
 void lx_config_ui_remove_universe(t_lx_config_ui* x)
 {
+	x->is_disable_external_refresh = true;
+
 	if (x->selected_row)
-		lxmax_service_universes_remove(x->service, x->selected_row);
+	{
+		t_lx_universe_config* config;
+		if (hashtab_lookup(x->service->universes, (t_symbol*)x->selected_row, (t_object**)&config) == MAX_ERR_NONE)
+		{
+			x->selected_row = lx_helpers_hashtab_get_next(x->service->universes, config->name,
+			                                              _lxsym_universe_config_internal_universe);
+			jdataview_deleterow(x->dataview, config->name);
+			lx_service_universes_remove(x->service, config);
+		}
+	}
+
+	x->is_disable_external_refresh = false;
 }
-
-void lx_config_ui_clear_universes(t_lx_config_ui* x)
-{
-	lxmax_service_universes_clear(x->service);
-}
-
-
 
 void lx_config_ui_get_cell_text(t_lx_config_ui* x, t_symbol* col_name, t_rowref rr, char* text, long max_length)
 {
-	if (object_isnogood(rr))
+	t_lx_universe_config* config;
+	if (hashtab_lookup(x->service->universes, (t_symbol*)rr, (t_object**)&config) != MAX_ERR_NONE)
 		return;
-
-	t_lx_universe_config* config = (t_lx_universe_config*)rr;
 
 	long argc = 0;
 	t_atom* argv = NULL;
@@ -243,10 +278,9 @@ void lx_config_ui_get_cell_text(t_lx_config_ui* x, t_symbol* col_name, t_rowref 
 
 void lx_config_ui_get_cell_value(t_lx_config_ui* x, t_symbol* col_name, t_rowref rr, long* argc, t_atom* argv)
 {
-	if (object_isnogood(rr))
+	t_lx_universe_config* config;
+	if (hashtab_lookup(x->service->universes, (t_symbol*)rr, (t_object**)&config) != MAX_ERR_NONE)
 		return;
-
-	t_lx_universe_config* config = (t_lx_universe_config*)rr;
 
 	long ac = 0;
 	t_atom* av = NULL;
@@ -260,17 +294,16 @@ void lx_config_ui_get_cell_value(t_lx_config_ui* x, t_symbol* col_name, t_rowref
 
 void lx_config_ui_get_cell_menu(t_lx_config_ui* x, t_symbol* col_name, t_rowref rr, long* argc, t_atom* argv, char** enabled, long* current_item_index)
 {
-	if (object_isnogood(rr))
+	t_lx_universe_config* config;
+	if (hashtab_lookup(x->service->universes, (t_symbol*)rr, (t_object**)&config) != MAX_ERR_NONE)
 		return;
-
-	t_lx_universe_config* config = (t_lx_universe_config*)rr;
 
 	long ac = 0;
 	t_atom* av = NULL;
 
 	if (col_name == _lxsym_universe_config_type)
 	{
-		lx_universe_type_get_list(&ac, &av);
+		lx_universe_type_get_list(config->protocol, &ac, &av);
 	}
 	else if (col_name == _lxsym_universe_config_protocol)
 	{
@@ -278,11 +311,11 @@ void lx_config_ui_get_cell_menu(t_lx_config_ui* x, t_symbol* col_name, t_rowref 
 	}
 	else if (col_name == _lxsym_universe_config_protocol_mode)
 	{
-		lx_universe_config_get_modes(config, &ac, &av);
+		lx_universe_protocol_mode_get_list(config->type, config->protocol, &ac, &av);
 	}
 	else if (col_name == _lxsym_universe_config_protocol_interface)
 	{
-		lx_network_adapter_get_menu_items(x->service->network_adapters, &ac, &av);
+		lx_universe_protocol_interface_get_list(x->service, config->protocol, &ac, &av);
 	}
 
 	*argc = ac;
@@ -297,10 +330,10 @@ void lx_config_ui_get_cell_menu(t_lx_config_ui* x, t_symbol* col_name, t_rowref 
 
 void lx_config_ui_set_value(t_lx_config_ui* x, t_symbol* col_name, t_rowref rr, long argc, t_atom* argv)
 {
-	if (object_isnogood(rr))
+	t_lx_universe_config* config;
+	if (hashtab_lookup(x->service->universes, (t_symbol*)rr, (t_object**)&config) != MAX_ERR_NONE)
 		return;
 
-	t_lx_universe_config* config = (t_lx_universe_config*)rr;
 	object_attr_setvalueof(config, col_name, argc, argv);
 
 	jdataview_redrawrow(x->dataview, rr);
@@ -308,10 +341,7 @@ void lx_config_ui_set_value(t_lx_config_ui* x, t_symbol* col_name, t_rowref rr, 
 
 void lx_config_ui_selected_row(t_lx_config_ui* x, t_rowref* rr)
 {
-	if (object_isnogood(rr))
-		x->selected_row = NULL;
-	else
-		x->selected_row = (t_lx_universe_config*)rr;
+	x->selected_row = (t_symbol*)rr;
 }
 
 
@@ -345,37 +375,43 @@ void lx_config_ui_integer_component(t_object* x, t_symbol* col_name, t_rowref rr
 
 
 
-void lx_config_ui_add_column(t_lx_config_ui* x, t_symbol* name, t_symbol* label, long width, e_lx_config_ui_column_kind kind)
+void lx_config_ui_add_column(t_lx_config_ui* x, t_symbol* name, t_symbol* label, long width,
+							 e_lx_config_ui_column_kind kind, t_bool is_numeric)
 {
 	t_object* column = jdataview_addcolumn(x->dataview, name, NULL, true);
 	jcolumn_setlabel(column, label);
 	jcolumn_setwidth(column, width);
+	jcolumn_setnumeric(column, is_numeric);
+	jcolumn_setdraggable(column, false);
 
 	switch (kind)
 	{
-		case COLUMN_TEXT:
+		case LX_CONFIG_UI_COLUMN_TEXT:
 			jcolumn_setrowcomponentmsg(column, gensym("text_component"));
 			jcolumn_setvaluemsg(column, _sym_setvalue, NULL, NULL);
 			break;
 
-		case COLUMN_TEXT_LIST:
+		case LX_CONFIG_UI_COLUMN_TEXT_LIST:
 			jcolumn_setrowcomponentmsg(column, gensym("text_list_component"));
 			jcolumn_setvaluemsg(column, _sym_setvalue, NULL, NULL);
 			break;
 
-		case COLUMN_TOGGLE:
+		case LX_CONFIG_UI_COLUMN_TOGGLE:
 			jcolumn_setcheckbox(column, _sym_setvalue);
 			jcolumn_setrowcomponentmsg(column, gensym("toggle_component"));
 			break;
 
-		case COLUMN_MENU:
+		case LX_CONFIG_UI_COLUMN_MENU:
 			jcolumn_setrowcomponentmsg(column, gensym("menu_component"));
 			jcolumn_setvaluemsg(column, _sym_setvalue, NULL, NULL);
 			break;
 
-		case COLUMN_INTEGER:
+		case LX_CONFIG_UI_COLUMN_INTEGER:
 			jcolumn_setrowcomponentmsg(column, gensym("integer_component"));
 			jcolumn_setvaluemsg(column, _sym_setvalue, NULL, NULL);
+			break;
+
+		case LX_CONFIG_UI_COLUMN_STATIC:
 			break;
 	}
 }
@@ -384,19 +420,16 @@ void lx_config_ui_refresh_data(t_lx_config_ui* x)
 {
 	jdataview_clear(x->dataview);
 
-	const long universe_count = (long)linklist_getsize(x->service->universes);
+	long key_count;
+	t_symbol** keys = NULL;
 
-	t_rowref* row_refs = (t_rowref*)sysmem_newptr(sizeof(t_rowref) * universe_count);
-
-	t_rowref* row_ref = row_refs;
-	t_lx_universe_config* config = (t_lx_universe_config*)linklist_getindex(x->service->universes, 0);
-	while(config)
+	if (hashtab_getkeys(x->service->universes, &key_count, &keys) == MAX_ERR_NONE)
 	{
-		*row_ref++ = (t_rowref*)config;
+		jdataview_addrows(x->dataview, key_count, (t_rowref*)keys);
 
-		linklist_next(x->service->universes, config, (void**)&config);
+		if (keys)
+			sysmem_freeptr(keys);
 	}
 
-	jdataview_addrows(x->dataview, universe_count, row_refs);
-	sysmem_freeptr(row_refs); 
+	jdataview_sort(x->dataview, _lxsym_universe_config_internal_universe, 1);
 }

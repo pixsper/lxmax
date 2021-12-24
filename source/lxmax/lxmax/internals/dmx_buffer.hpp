@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Pixsper Ltd. All rights reserved.
+// Copyright (c) 2023 Pixsper Ltd. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 
 #pragma once
@@ -8,20 +8,22 @@
 #include <map>
 #include <mutex>
 
-#include "common.hpp"
-#include "dmx.hpp"
+#include "lx_common.h"
+#include "lx_dmx.h"
+#include "dmx_io_protocol.hpp"
+
 
 namespace lxmax
 {
     class dmx_buffer
 	{
-        std::map<universe_address, size_t> _universes;
+        std::map<t_universe_address, size_t> _universes;
 
-        std::vector<dmx_value> _buffer_a;
-        std::vector<dmx_value> _buffer_b;
+        std::vector<t_dmx_value> _buffer_a;
+        std::vector<t_dmx_value> _buffer_b;
 
-        std::vector<dmx_value>* _current;
-        std::vector<dmx_value>* _next;
+        std::vector<t_dmx_value>* _current;
+        std::vector<t_dmx_value>* _next;
 
         mutable std::mutex _mutex_read;
         std::mutex _mutex_write;
@@ -29,14 +31,12 @@ namespace lxmax
     public:
         dmx_buffer();
 
-        void resize(const std::set<universe_address>& universes);
+        void resize(const std::set<t_universe_address>& universes);
 
-        void write(universe_address universe, channel_address channel, const dmx_value* src_buffer, size_t channel_count);
+        void write(t_universe_address universe, t_channel_address channel, const t_dmx_value* src_buffer, size_t channel_count);
 
-        size_t read(universe_address universe, channel_address channel, dmx_value* dst_buffer, size_t channel_count) const;
+        size_t read(t_universe_address universe, t_channel_address channel, t_dmx_value* dst_buffer, size_t channel_count) const;
 
         void swap() noexcept;
 	};
-
-	
 }

@@ -18,3 +18,5 @@ extensions
 support
 tests
 package-info.json
+cmake-build-*
+.DS_Store

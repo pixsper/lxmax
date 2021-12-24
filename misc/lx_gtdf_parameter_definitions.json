@@ -1,0 +1,1060 @@
+{
+    "parameter_definitions": [
+        {
+            "name": "AnimationSystem#1",
+            "description": "This is the main attribute of the animation system insertion control. Controls the insertion of the fixture's animation system in the light output. Is used for animation effects where a disk is inserted into the light output."
+        },
+        {
+            "name": "AnimationSystem#1Audio",
+            "description": "Controls audio-controlled functionality of animation system #1 insertion."
+        },
+        {
+            "name": "AnimationSystem#1Macro",
+            "description": "Selects predefined effects in animation system #1."
+        },
+        {
+            "name": "AnimationSystem#1Pos",
+            "description": "This is the main attribute of the animation system spinning control. Controls angle of indexed rotation of animation system #1 disk."
+        },
+        {
+            "name": "AnimationSystem#1PosAudio",
+            "description": "Controls audio-controlled functionality of animation system #1 disk."
+        },
+        {
+            "name": "AnimationSystem#1PosRandom",
+            "description": "Controls random speed of animation system #1 disk."
+        },
+        {
+            "name": "AnimationSystem#1PosRotate",
+            "description": "Controls the speed and direction of continuous rotation of animation system #1 disk."
+        },
+        {
+            "name": "AnimationSystem#1PosShake",
+            "description": "Controls frequency of the shake of animation system #1 disk."
+        },
+        {
+            "name": "AnimationSystem#1Ramp",
+            "description": "Sets frequency of animation system #1 insertion ramp."
+        },
+        {
+            "name": "AnimationSystem#1Random",
+            "description": "Controls frequency of animation system #1 random insertion."
+        },
+        {
+            "name": "AnimationSystem#1Shake",
+            "description": "Sets frequency of animation system #1 insertion shake."
+        },
+        {
+            "name": "AnimationSystemReset",
+            "description": "Resets the fixture's animation system features."
+        },
+        {
+            "name": "AnimationWheel#1Audio",
+            "description": "Controls audio-controlled functionality of animation wheel #1."
+        },
+        {
+            "name": "AnimationWheel#1Macro",
+            "description": "Selects predefined effects in animation wheel #1."
+        },
+        {
+            "name": "AnimationWheel#1Mode",
+            "description": "Changes control between selecting"
+        },
+        {
+            "name": "AnimationWheel#1Pos",
+            "description": "Controls angle of indexed rotation of slots in animation wheel. This is the main attribute of animation wheel #1 wheel slot control."
+        },
+        {
+            "name": "AnimationWheel#1PosRotate",
+            "description": "Controls the speed and direction of continuous rotation of slots in animation wheel #1."
+        },
+        {
+            "name": "AnimationWheel#1PosShake",
+            "description": "Controls frequency of the shake of slots in animation wheel #1."
+        },
+        {
+            "name": "AnimationWheel#1Random",
+            "description": "Controls frequency of animation wheel #1 random slot selection."
+        },
+        {
+            "name": "AnimationWheel#1SelectEffects",
+            "description": "Selects slots which run effects in animation wheel #1."
+        },
+        {
+            "name": "AnimationWheel#1SelectShake",
+            "description": "Selects slots which shake in animation wheel and controls the frequency of the slots shake within the same channel function."
+        },
+        {
+            "name": "AnimationWheel#1SelectSpin",
+            "description": "Selects slots whose rotation is continuous in animation wheel and controls the angular speed of the slot spin within the same channel function"
+        },
+        {
+            "name": "AnimationWheel#1This",
+            "description": "is the main attribute of the animation wheel's #1 wheel control. Selects slots in the animation wheel. A different channel function sets the angle of the indexed position in the selected slot or the angular speed of its continuous rotation. Is used for animation effects with multiple slots."
+        },
+        {
+            "name": "AnimationWheelShortcutMode",
+            "description": "Defines whether the animation wheel takes the shortest distance between two positions."
+        },
+        {
+            "name": "BeamEffectIndexRotateMode",
+            "description": "Changes mode to control either index or rotation of the beam effects."
+        },
+        {
+            "name": "BeamReset",
+            "description": "Resets the fixture's beam features."
+        },
+        {
+            "name": "BeamShaper",
+            "description": "Activates fixture's beam shaper."
+        },
+        {
+            "name": "BeamShaperMacro",
+            "description": "Predefined presets for fixture's beam shaper positions."
+        },
+        {
+            "name": "BeamShaperPos",
+            "description": "Indexing of fixture's beam shaper."
+        },
+        {
+            "name": "BeamShaperPosRotate",
+            "description": "Continuous rotation of fixture's beam shaper."
+        },
+        {
+            "name": "BlackoutMode",
+            "description": "Closes the light output under certain conditions (movement correction"
+        },
+        {
+            "name": "Blade#1A",
+            "description": "1 of 2 shutters that shape the top/right/bottom/left of the beam."
+        },
+        {
+            "name": "Blade#1B",
+            "description": "2 of 2 shutters that shape the top/right/bottom/left of the beam."
+        },
+        {
+            "name": "Blade#1Rot",
+            "description": "Rotates position of blade#1."
+        },
+        {
+            "name": "BladeSoft#1A",
+            "description": "1 of 2 soft edge blades that shape the top/right/bottom/left of the beam."
+        },
+        {
+            "name": "BladeSoft#1B",
+            "description": "2 of 2 soft edge blades that shape the top/right/bottom/left of the beam."
+        },
+        {
+            "name": "Blower#1",
+            "description": "Fog or hazer's blower feature."
+        },
+        {
+            "name": "CIE_Brightness",
+            "description": "Controls the fixture's CIE 1931 color attribute regarding the brightness (Y)."
+        },
+        {
+            "name": "CIE_X",
+            "description": "Controls the fixture's CIE 1931 color attribute regarding the chromaticity x."
+        },
+        {
+            "name": "CIE_Y",
+            "description": "Controls the fixture's CIE 1931 color attribute regarding the chromaticity y."
+        },
+        {
+            "name": "CRIMode",
+            "description": "Controls CRI settings of output."
+        },
+        {
+            "name": "CTB",
+            "description": "Controls the fixture's “Correct to blue” wheel or mixing system."
+        },
+        {
+            "name": "CTBReset",
+            "description": "Resets the fixture's CTB."
+        },
+        {
+            "name": "CTC",
+            "description": "Controls the fixture's “Correct to color” wheel or mixing system."
+        },
+        {
+            "name": "CTCReset",
+            "description": "Resets the fixture's CTC."
+        },
+        {
+            "name": "CTO",
+            "description": "Controls the fixture's “Correct to orange” wheel or mixing system."
+        },
+        {
+            "name": "CTOReset",
+            "description": "Resets the fixture's CTO."
+        },
+        {
+            "name": "ChromaticMode",
+            "description": "Selects chromatic behavior of the device."
+        },
+        {
+            "name": "Color#1",
+            "description": "The fixture's color wheel #1. Selects colors in color wheel #1. This is the main attribute of color wheel's #1 wheel control."
+        },
+        {
+            "name": "Color#1Mode",
+            "description": "Changes control between selecting"
+        },
+        {
+            "name": "Color#1WheelAudio",
+            "description": "Controls audio-controlled functionality of color wheel #1."
+        },
+        {
+            "name": "Color#1WheelIndex",
+            "description": "Controls angle of indexed rotation of color wheel #1"
+        },
+        {
+            "name": "Color#1WheelRandom",
+            "description": "Controls frequency of color wheel's #1 random color slot selection."
+        },
+        {
+            "name": "Color#1WheelSpin",
+            "description": "Controls the speed and direction of continuous rotation of color wheel #1."
+        },
+        {
+            "name": "ColorAdd_B",
+            "description": "Controls the intensity of the fixture's blue emitters for direct additive color mixing."
+        },
+        {
+            "name": "ColorAdd_BC",
+            "description": "Controls the intensity of the fixture's light-blue emitters for direct additive color mixing."
+        },
+        {
+            "name": "ColorAdd_BM",
+            "description": "Controls the intensity of the fixture's purple emitters for direct additive color mixing."
+        },
+        {
+            "name": "ColorAdd_C",
+            "description": "Controls the intensity of the fixture's cyan emitters for direct additive color mixing."
+        },
+        {
+            "name": "ColorAdd_CW",
+            "description": "Controls the intensity of the fixture's cool white emitters for direct additive color mixing."
+        },
+        {
+            "name": "ColorAdd_G",
+            "description": "Controls the intensity of the fixture's green emitters for direct additive color mixing."
+        },
+        {
+            "name": "ColorAdd_GC",
+            "description": "Controls the intensity of the fixture's blue-green emitters for direct additive color mixing."
+        },
+        {
+            "name": "ColorAdd_GY",
+            "description": "Controls the intensity of the fixture's lime emitters for direct additive color mixing."
+        },
+        {
+            "name": "ColorAdd_M",
+            "description": "Controls the intensity of the fixture's magenta emitters for direct additive color mixing."
+        },
+        {
+            "name": "ColorAdd_R",
+            "description": "Controls the intensity of the fixture's red emitters for direct additive color mixing."
+        },
+        {
+            "name": "ColorAdd_RM",
+            "description": "Controls the intensity of the fixture's pink emitters for direct additive color mixing."
+        },
+        {
+            "name": "ColorAdd_RY",
+            "description": "Controls the intensity of the fixture's amber emitters for direct additive color mixing."
+        },
+        {
+            "name": "ColorAdd_UV",
+            "description": "Controls the intensity of the fixture's UV emitters for direct additive color mixing."
+        },
+        {
+            "name": "ColorAdd_W",
+            "description": "Controls the intensity of the fixture's white emitters for direct additive color mixing."
+        },
+        {
+            "name": "ColorAdd_WW",
+            "description": "Controls the intensity of the fixture's warm white emitters for direct additive color mixing."
+        },
+        {
+            "name": "ColorAdd_Y",
+            "description": "Controls the intensity of the fixture's yellow emitters for direct additive color mixing."
+        },
+        {
+            "name": "ColorCalibrationMode",
+            "description": "Sets calibration mode (for example on/off)."
+        },
+        {
+            "name": "ColorConsistency",
+            "description": "Controls consistent behavior of color."
+        },
+        {
+            "name": "ColorControl",
+            "description": "Controls special color related functions."
+        },
+        {
+            "name": "ColorEffects#1",
+            "description": "Selects predefined color effects built into the fixture."
+        },
+        {
+            "name": "ColorMacro#1",
+            "description": "Selects predefined colors that are programed in the fixture's firmware."
+        },
+        {
+            "name": "ColorMacro#1Rate",
+            "description": "Controls the time between Color Macro steps."
+        },
+        {
+            "name": "ColorMixMSpeed",
+            "description": "Movement speed of the fixture's ColorMix presets."
+        },
+        {
+            "name": "ColorMixMode",
+            "description": "Changes control between selecting continuous selection"
+        },
+        {
+            "name": "ColorMixReset",
+            "description": "Resets the fixture's color mixing system."
+        },
+        {
+            "name": "ColorModelMode",
+            "description": "Controls color model (CMY/RGB/HSV)."
+        },
+        {
+            "name": "ColorRGB_Blue",
+            "description": "Controls the fixture's blue attribute for indirect RGB color mixing."
+        },
+        {
+            "name": "ColorRGB_Cyan",
+            "description": "Controls the fixture's cyan attribute for indirect CMY color mixing."
+        },
+        {
+            "name": "ColorRGB_Green",
+            "description": "Controls the fixture's green attribute for indirect RGB color mixing."
+        },
+        {
+            "name": "ColorRGB_Magenta",
+            "description": "Controls the fixture's magenta attribute for indirect CMY color mixing."
+        },
+        {
+            "name": "ColorRGB_Quality",
+            "description": "Controls the fixture's quality attribute for indirect color mixing."
+        },
+        {
+            "name": "ColorRGB_Red",
+            "description": "Controls the fixture's red attribute for indirect RGB color mixing."
+        },
+        {
+            "name": "ColorRGB_Yellow",
+            "description": "Controls the fixture's yellow attribute for indirect CMY color mixing."
+        },
+        {
+            "name": "ColorSettingsReset",
+            "description": "Resets settings of color control channel."
+        },
+        {
+            "name": "ColorSub_B",
+            "description": "Controls the insertion of the fixture's blue filter flag for direct subtractive color mixing."
+        },
+        {
+            "name": "ColorSub_C",
+            "description": "Controls the insertion of the fixture's cyan filter flag for direct subtractive color mixing."
+        },
+        {
+            "name": "ColorSub_G",
+            "description": "Controls the insertion of the fixture's green filter flag for direct subtractive color mixing."
+        },
+        {
+            "name": "ColorSub_M",
+            "description": "Controls the insertion of the fixture's magenta filter flag for direct subtractive color mixing."
+        },
+        {
+            "name": "ColorSub_R",
+            "description": "Controls the insertion of the fixture's red filter flag for direct subtractive color mixing."
+        },
+        {
+            "name": "ColorSub_Y",
+            "description": "Controls the insertion of the fixture's yellow filter flag for direct subtractive color mixing."
+        },
+        {
+            "name": "ColorUniformity",
+            "description": "Controls behavior of color uniformity."
+        },
+        {
+            "name": "ColorWheelReset",
+            "description": "Resets the fixture's color wheel."
+        },
+        {
+            "name": "ColorWheelSelectMSpeed",
+            "description": "Movement speed of the fixture's color wheel."
+        },
+        {
+            "name": "ColorWheelShortcutMode",
+            "description": "Defines whether the color wheel takes the shortest distance between two colors."
+        },
+        {
+            "name": "Control#1",
+            "description": "Controls the channel of a fixture."
+        },
+        {
+            "name": "CustomColor",
+            "description": "Custom color related functions (save"
+        },
+        {
+            "name": "CyanMode",
+            "description": "Controls how Cyan is used within the fixture's cyan CMY-mixing feature."
+        },
+        {
+            "name": "DMXInput",
+            "description": "Selects DMX Input"
+        },
+        {
+            "name": "Dimmer",
+            "description": "Controls the intensity of a fixture."
+        },
+        {
+            "name": "DimmerCurve",
+            "description": "Selects different dimmer curves of the fixture."
+        },
+        {
+            "name": "DimmerMode",
+            "description": "Selects different modes of intensity."
+        },
+        {
+            "name": "DisplayIntensity",
+            "description": "Adjusts intensity of display"
+        },
+        {
+            "name": "Effects#1",
+            "description": "Generically predefined macros and effects of a fixture."
+        },
+        {
+            "name": "Effects#1Adjust#2",
+            "description": "Controls parameter #2 of effect #1"
+        },
+        {
+            "name": "Effects#1Fade",
+            "description": "Snapping or smooth look of running effects."
+        },
+        {
+            "name": "Effects#1Pos",
+            "description": "Controls angle of indexed rotation of slot/effect in effect wheel/macro #1. This is the main attribute of effect wheel/macro  #1 slot/effect control."
+        },
+        {
+            "name": "Effects#1PosRotate",
+            "description": "Controls speed and direction of slot/effect in effect wheel #1."
+        },
+        {
+            "name": "Effects#1Rate",
+            "description": "Frequency of running effects."
+        },
+        {
+            "name": "EffectsSync",
+            "description": "Sets offset between running effects and effects 2."
+        },
+        {
+            "name": "Fan#1",
+            "description": "Fog or hazer's Fan feature."
+        },
+        {
+            "name": "Fan#1Mode",
+            "description": "Controls fan #1 mode."
+        },
+        {
+            "name": "Fans",
+            "description": "Fancontrols a fixture or device."
+        },
+        {
+            "name": "FieldOfView",
+            "description": "Defines field of view."
+        },
+        {
+            "name": "FixtureCalibrationReset",
+            "description": "Resets the fixture's calibration."
+        },
+        {
+            "name": "FixtureGlobalReset",
+            "description": "Generally resets the entire fixture."
+        },
+        {
+            "name": "Focus#1",
+            "description": "Controls the sharpness of the fixture's spot light. Can blur or sharpen the edge of the spot."
+        },
+        {
+            "name": "Focus#1Adjust",
+            "description": "Autofocuses functionality using presets."
+        },
+        {
+            "name": "Focus#1Distance",
+            "description": "Autofocuses functionality using distance."
+        },
+        {
+            "name": "FocusMSpeed",
+            "description": "Movement speed of the fixture's focus."
+        },
+        {
+            "name": "FocusMode",
+            "description": "Changes modes of the fixture's focus – manual or auto-focus."
+        },
+        {
+            "name": "FocusReset",
+            "description": "Resets the fixture's focus."
+        },
+        {
+            "name": "Fog#1",
+            "description": "Fog or hazer's Fog feature."
+        },
+        {
+            "name": "FollowSpotMode",
+            "description": "Selects follow spot control mode."
+        },
+        {
+            "name": "FrameMSpeed",
+            "description": "Movement speed of the fixture's shapers."
+        },
+        {
+            "name": "FrameReset",
+            "description": "Resets the fixture's shapers."
+        },
+        {
+            "name": "Frost#1",
+            "description": "The ability to soften the fixture's spot light with a frosted lens."
+        },
+        {
+            "name": "Frost#1MSpeed",
+            "description": "Movement speed of the fixture's frost #1."
+        },
+        {
+            "name": "Frost#1PulseClose",
+            "description": "Sets frequency of frost's closing pulse."
+        },
+        {
+            "name": "Frost#1PulseOpen",
+            "description": "Sets frequency of frost's opening pulse"
+        },
+        {
+            "name": "Frost#1Ramp",
+            "description": "Sets frequency of frost's ramp."
+        },
+        {
+            "name": "Function",
+            "description": "Generally controls features of the fixture."
+        },
+        {
+            "name": "GlobalMSpeed",
+            "description": "General speed of fixture's features."
+        },
+        {
+            "name": "Gobo#1",
+            "description": "The fixture's gobo wheel #1. This is the main attribute of gobo wheel's #1 wheel control. Selects gobos in gobo wheel #1. A different channel function sets the angle of the indexed position in the selected gobo or the angular speed of its continuous rotation."
+        },
+        {
+            "name": "Gobo#1Pos",
+            "description": "Controls angle of indexed rotation of gobos in gobo wheel #1. This is the main attribute of gobo wheel's #1 wheel slot control."
+        },
+        {
+            "name": "Gobo#1PosRotate",
+            "description": "Controls the speed and direction of continuous rotation of gobos in gobo wheel #1."
+        },
+        {
+            "name": "Gobo#1PosShake",
+            "description": "Controls frequency of the shake of gobos in gobo wheel #1."
+        },
+        {
+            "name": "Gobo#1SelectEffects",
+            "description": "Selects gobos which run effects in gobo wheel #1."
+        },
+        {
+            "name": "Gobo#1SelectShake",
+            "description": "Selects gobos which shake in gobo wheel #1 and controls the frequency of the gobo's shake within the same channel function."
+        },
+        {
+            "name": "Gobo#1SelectSpin",
+            "description": "Selects gobos whose rotation is continuous in gobo wheel #1 and controls the angular speed of the gobo's spin within the same channel function."
+        },
+        {
+            "name": "Gobo#1WheelAudio",
+            "description": "Controls audio-controlled functionality of gobo wheel #1."
+        },
+        {
+            "name": "Gobo#1WheelIndex",
+            "description": "Controls angle of indexed rotation of gobo wheel #1."
+        },
+        {
+            "name": "Gobo#1WheelMode",
+            "description": "Changes control between selecting"
+        },
+        {
+            "name": "Gobo#1WheelRandom",
+            "description": "Controls speed of gobo wheel's #1 random gobo slot selection."
+        },
+        {
+            "name": "Gobo#1WheelShake",
+            "description": "Controls frequency of the shake of gobo wheel #1."
+        },
+        {
+            "name": "Gobo#1WheelSpin",
+            "description": "Controls the speed and direction of continuous rotation of gobo wheel #1."
+        },
+        {
+            "name": "GoboWheel#1MSpeed",
+            "description": "Movement speed of the fixture's gobo wheel #1."
+        },
+        {
+            "name": "GoboWheelReset",
+            "description": "Resets the fixture's gobo wheel."
+        },
+        {
+            "name": "HSB_Brightness",
+            "description": "Controls the fixture's color attribute regarding the brightness."
+        },
+        {
+            "name": "HSB_Hue",
+            "description": "Controls the fixture's color attribute regarding the hue."
+        },
+        {
+            "name": "HSB_Quality",
+            "description": "Controls the fixture's color attribute regarding the quality."
+        },
+        {
+            "name": "HSB_Saturation",
+            "description": "Controls the fixture's color attribute regarding the saturation."
+        },
+        {
+            "name": "Haze#1",
+            "description": "Fog or hazer's haze feature."
+        },
+        {
+            "name": "InputSource",
+            "description": "Defines media input source e.g. a camera input."
+        },
+        {
+            "name": "IntensityMSpeed",
+            "description": "Movement speed of the fixture's intensity."
+        },
+        {
+            "name": "IntensityReset",
+            "description": "Resets the fixture's intensity."
+        },
+        {
+            "name": "Iris",
+            "description": "Controls the diameter of the fixture's beam."
+        },
+        {
+            "name": "IrisMSpeed",
+            "description": "Movement speed of the fixture's iris."
+        },
+        {
+            "name": "IrisMode",
+            "description": "Changes modes of the fixture's iris – linear"
+        },
+        {
+            "name": "IrisPulseClose",
+            "description": "Sets frequency of iris's closing pulse."
+        },
+        {
+            "name": "IrisPulseOpen",
+            "description": "Sets frequency of iris's opening pulse."
+        },
+        {
+            "name": "IrisRandomPulseClose",
+            "description": "Sets frequency of iris's random closing pulse."
+        },
+        {
+            "name": "IrisRandomPulseOpen",
+            "description": "Sets frequency of iris's random opening pulse."
+        },
+        {
+            "name": "IrisReset",
+            "description": "Resets the fixture's iris."
+        },
+        {
+            "name": "IrisStrobe",
+            "description": "Sets frequency of the iris's strobe feature."
+        },
+        {
+            "name": "IrisStrobeRandom",
+            "description": "Sets frequency of the iris's random movement."
+        },
+        {
+            "name": "KeyStone#1A",
+            "description": "1 of 2 corners that shape the top/right/bottom/left of the beam."
+        },
+        {
+            "name": "KeyStone#1B",
+            "description": "2 of 2 corners that shape the top/right/bottom/left of the beam."
+        },
+        {
+            "name": "LEDFrequency",
+            "description": "Controls LED frequency."
+        },
+        {
+            "name": "LEDZoneMode",
+            "description": "Changes zones of LEDs."
+        },
+        {
+            "name": "LampControl",
+            "description": "Controls the fixture's lamp on/lamp off feature."
+        },
+        {
+            "name": "LampPowerMode",
+            "description": "Controls the energy consumption of the lamp."
+        },
+        {
+            "name": "MagentaMode",
+            "description": "Controls how Cyan is used within the fixture's magenta CMY-mixing."
+        },
+        {
+            "name": "MediaContent#1",
+            "description": "Selects file with media content."
+        },
+        {
+            "name": "MediaFolder#1",
+            "description": "Selects folder that contains media content."
+        },
+        {
+            "name": "ModelContent#1",
+            "description": "Selects file with 3D model content."
+        },
+        {
+            "name": "ModelFolder#1",
+            "description": "Selects folder that contains 3D model content. For example 3D meshes for mapping."
+        },
+        {
+            "name": "NoFeature",
+            "description": "Ranges without a functionality."
+        },
+        {
+            "name": "Pan",
+            "description": "Controls the fixture's sideward movement (horizontal axis)."
+        },
+        {
+            "name": "PanMode",
+            "description": "Selects fixture's pan mode. Selects between a limited pan range (e.g. -270 to 270) or a continuous pan range."
+        },
+        {
+            "name": "PanReset",
+            "description": "Resets the fixture's pan."
+        },
+        {
+            "name": "PanRotate",
+            "description": "Controls the speed of the fixture's continuous pan movement (horizontal axis)."
+        },
+        {
+            "name": "PanTiltMode",
+            "description": "Selects fixture's pan/tilt mode. Selects between a limited pan/tilt range or a continuous pan/tilt range."
+        },
+        {
+            "name": "PixelMode",
+            "description": "Controls behavior of LED pixels."
+        },
+        {
+            "name": "PlayBegin",
+            "description": "Defines starting point of media content playback."
+        },
+        {
+            "name": "PlayEnd",
+            "description": "Defines end point of media content playback."
+        },
+        {
+            "name": "PlayMode",
+            "description": "Defines media playback mode."
+        },
+        {
+            "name": "PlaySpeed",
+            "description": "Adjusts playback speed of media content."
+        },
+        {
+            "name": "PositionEffect",
+            "description": "Selects the predefined position effects that are built into the fixture."
+        },
+        {
+            "name": "PositionEffectFade",
+            "description": "Snaps or smooth fades with timing in running predefined position effects."
+        },
+        {
+            "name": "PositionEffectRate",
+            "description": "Controls the speed of the predefined position effects that are built into the fixture."
+        },
+        {
+            "name": "PositionMSpeed",
+            "description": "Movement speed of the fixture's pan/tilt."
+        },
+        {
+            "name": "PositionModes",
+            "description": "Selects the fixture's position mode."
+        },
+        {
+            "name": "PositionReset",
+            "description": "Resets the fixture's pan/tilt."
+        },
+        {
+            "name": "Prism#1",
+            "description": "The fixture's prism wheel #1. Selects prisms in prism wheel #1. A different channel function sets the angle of the indexed position in the selected prism or the angular speed of its continuous rotation.  This is the main attribute of prism wheel's #1 wheel control."
+        },
+        {
+            "name": "Prism#1MSpeed",
+            "description": "Movement speed of the fixture's prism wheel #1."
+        },
+        {
+            "name": "Prism#1Macro",
+            "description": "Macro functions of prism wheel #1."
+        },
+        {
+            "name": "Prism#1Pos",
+            "description": "Controls angle of indexed rotation of prisms in prism wheel #1.  This is the main attribute of prism wheel's 1 wheel slot control."
+        },
+        {
+            "name": "Prism#1PosRotate",
+            "description": "Controls the speed and direction of continuous rotation of prisms in prism wheel #1."
+        },
+        {
+            "name": "Prism#1SelectSpin",
+            "description": "Selects prisms whose rotation is continuous in prism wheel #1 and controls the angular speed of the prism's spin within the same channel function."
+        },
+        {
+            "name": "ReflectorAdjust",
+            "description": "Movement speed of the fixture's frost."
+        },
+        {
+            "name": "Rot_X",
+            "description": "Defines rotation around X axis."
+        },
+        {
+            "name": "Rot_Y",
+            "description": "Defines rotation around Y axis."
+        },
+        {
+            "name": "Rot_Z",
+            "description": "Defines rotation around Z axis."
+        },
+        {
+            "name": "Scale_X",
+            "description": "Scaling on X axis."
+        },
+        {
+            "name": "Scale_XYZ",
+            "description": "Unified scaling on all axes."
+        },
+        {
+            "name": "Scale_Y",
+            "description": "Scaling on Y axis."
+        },
+        {
+            "name": "Scale_Z",
+            "description": "Scaling on Y axis."
+        },
+        {
+            "name": "ShaperMacros",
+            "description": "Predefined presets for shaper positions."
+        },
+        {
+            "name": "ShaperMacrosSpeed",
+            "description": "Speed of predefined effects on shapers."
+        },
+        {
+            "name": "ShaperRot",
+            "description": "Rotates position of blade assembly."
+        },
+        {
+            "name": "Shutter#1",
+            "description": "Controls the fixture's mechanical or electronical shutter feature."
+        },
+        {
+            "name": "Shutter#1Strobe",
+            "description": "Controls the frequency of the fixture's mechanical or electronical strobe shutter feature."
+        },
+        {
+            "name": "Shutter#1StrobeEffect",
+            "description": "Controls the frequency of the fixture's mechanical or electronical shutter effect feature."
+        },
+        {
+            "name": "Shutter#1StrobePulse",
+            "description": "Controls the frequency of the fixture's mechanical or electronical pulse shutter feature."
+        },
+        {
+            "name": "Shutter#1StrobePulseClose",
+            "description": "Controls the frequency of the fixture's mechanical or electronical closing pulse shutter feature."
+        },
+        {
+            "name": "Shutter#1StrobePulseOpen",
+            "description": "Controls the frequency of the fixture's mechanical or electronical opening pulse shutter feature."
+        },
+        {
+            "name": "Shutter#1StrobeRandom",
+            "description": "Controls the frequency of the fixture's mechanical or electronical random strobe shutter feature."
+        },
+        {
+            "name": "Shutter#1StrobeRandomPulse",
+            "description": "Controls the frequency of the fixture's mechanical or electronical random pulse shutter feature."
+        },
+        {
+            "name": "Shutter#1StrobeRandomPulseClose",
+            "description": "Controls the frequency of the fixture's mechanical or electronical random closing pulse shutter feature."
+        },
+        {
+            "name": "Shutter#1StrobeRandomPulseOpen",
+            "description": "Controls the frequency of the fixture's mechanical or electronical random opening pulse shutter feature."
+        },
+        {
+            "name": "ShutterReset",
+            "description": "Resets the fixture's shutter."
+        },
+        {
+            "name": "StrobeDuration",
+            "description": "Controls the length of a strobe flash."
+        },
+        {
+            "name": "StrobeMode",
+            "description": "Changes strobe style (strobe"
+        },
+        {
+            "name": "StrobeRate",
+            "description": "Controls the time between strobe flashes."
+        },
+        {
+            "name": "Tilt",
+            "description": "Controls the fixture's upward and the downward movement (vertical axis)."
+        },
+        {
+            "name": "TiltMode",
+            "description": "Selects fixture's pan mode. Selects between a limited tilt range (e.g. -130 to 130) or a continuous tilt range."
+        },
+        {
+            "name": "TiltReset",
+            "description": "Resets the fixture's tilt."
+        },
+        {
+            "name": "TiltRotate",
+            "description": "Controls the speed of the fixture's continuous tilt movement (vertical axis)."
+        },
+        {
+            "name": "Tint",
+            "description": "Controls the fixture's “Correct green to magenta” wheel or mixing system."
+        },
+        {
+            "name": "UVStability",
+            "description": "Settings for UV stability color behavior."
+        },
+        {
+            "name": "Video",
+            "description": "Controls video features."
+        },
+        {
+            "name": "VideoBlendMode",
+            "description": "Defines mode of video blending."
+        },
+        {
+            "name": "VideoBoost_B",
+            "description": "Adjusts color boost blue of content."
+        },
+        {
+            "name": "VideoBoost_G",
+            "description": "Adjusts color boost green of content."
+        },
+        {
+            "name": "VideoBoost_R",
+            "description": "Adjusts color boost red of content."
+        },
+        {
+            "name": "VideoBrightness",
+            "description": "Adjusts brightness of content."
+        },
+        {
+            "name": "VideoCamera#1",
+            "description": "Selects the video camera#1."
+        },
+        {
+            "name": "VideoContrast",
+            "description": "Adjusts contrast of content."
+        },
+        {
+            "name": "VideoEffect#1Parameter#2",
+            "description": "Controls parameter #2 of VideoEffect#1Type."
+        },
+        {
+            "name": "VideoEffect#1Type",
+            "description": "Selects dedicated effects which are used for media."
+        },
+        {
+            "name": "VideoHueShift",
+            "description": "Adjusts color hue shift of content."
+        },
+        {
+            "name": "VideoKeyColor_B",
+            "description": "Adjusts blue color for color keying."
+        },
+        {
+            "name": "VideoKeyColor_G",
+            "description": "Adjusts green color for color keying."
+        },
+        {
+            "name": "VideoKeyColor_R",
+            "description": "Adjusts red color for color keying."
+        },
+        {
+            "name": "VideoKeyIntensity",
+            "description": "Adjusts intensity of color keying."
+        },
+        {
+            "name": "VideoKeyTolerance",
+            "description": "Adjusts tolerance of color keying."
+        },
+        {
+            "name": "VideoSaturation",
+            "description": "Adjusts saturation of content."
+        },
+        {
+            "name": "VideoSoundVolume#1",
+            "description": "Adjusts sound volume."
+        },
+        {
+            "name": "WavelengthCorrection",
+            "description": "Settings for WaveLength corrections of colors."
+        },
+        {
+            "name": "WhiteCount",
+            "description": "Controls if White LED is proportionally added to RGB."
+        },
+        {
+            "name": "XYZ_X",
+            "description": "Defines a fixture's x-coordinate within an XYZ coordinate system."
+        },
+        {
+            "name": "XYZ_Y",
+            "description": "Defines a fixture's y-coordinate within an XYZ coordinate system."
+        },
+        {
+            "name": "XYZ_Z",
+            "description": "Defines a fixture's z-coordinate within an XYZ coordinate system."
+        },
+        {
+            "name": "YellowMode",
+            "description": "Controls how Cyan is used within the fixture's yellow CMY-mixing feature."
+        },
+        {
+            "name": "Zoom",
+            "description": "Controls the spread of the fixture's beam/spot."
+        },
+        {
+            "name": "ZoomMSpeed",
+            "description": "Movement speed of the fixture's zoom."
+        },
+        {
+            "name": "ZoomMode",
+            "description": "Changes modes of the fixture's zoom."
+        },
+        {
+            "name": "ZoomModeBeam",
+            "description": "Selects beam mode of zoom."
+        },
+        {
+            "name": "ZoomModeSpot",
+            "description": "Selects spot mode of zoom."
+        },
+        {
+            "name": "ZoomReset",
+            "description": "Resets the fixture's zoom."
+        }
+    ]
+}

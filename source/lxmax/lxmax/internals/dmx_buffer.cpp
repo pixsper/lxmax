@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Pixsper Ltd. All rights reserved.
+// Copyright (c) 2023 Pixsper Ltd. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 
 #include "dmx_buffer.hpp"
@@ -14,33 +14,33 @@ namespace lxmax
 	{
 	}
 
-	void dmx_buffer::resize(const std::set<universe_address>& universes)
+	void dmx_buffer::resize(const std::set<t_universe_address>& universes)
 	{
 		std::scoped_lock lock(_mutex_write, _mutex_read);
 
-		_next->resize(universes.size() * k_universe_length);
+		_next->resize(universes.size() * LX_DMX_UNIVERSE_LENGTH);
 
-		std::map<universe_address, size_t> updated_universes;
+		std::map<t_universe_address, size_t> updated_universes;
 		size_t i = 0;
 		for (const auto& universe : universes)
 		{
 			updated_universes.emplace(universe, i);
-			i += k_universe_length;
+			i += LX_DMX_UNIVERSE_LENGTH;
 
 			const auto it = _universes.find(universe);
 			if (it != std::cend(_universes))
-				std::copy_n((*_current).data() + it->second, k_universe_length, (*_next).data() + i);
+				std::copy_n((*_current).data() + it->second, LX_DMX_UNIVERSE_LENGTH, (*_next).data() + i);
 			else
-				std::fill_n((*_next).data() + it->second, k_universe_length, 0);
+				std::fill_n((*_next).data() + it->second, LX_DMX_UNIVERSE_LENGTH, 0);
 		}
 
-		_current->resize(universes.size() * k_universe_length);
+		_current->resize(universes.size() * LX_DMX_UNIVERSE_LENGTH);
 		std::copy_n(_next->data(), _next->size(), _current->data());
 
 		_universes = updated_universes;
 	}
 
-	void dmx_buffer::write(universe_address universe, channel_address channel, const dmx_value* src_buffer,
+	void dmx_buffer::write(t_universe_address universe, t_channel_address channel, const t_dmx_value* src_buffer,
 	                       size_t channel_count)
 	{
 		const auto& it = _universes.find(universe);
@@ -53,10 +53,10 @@ namespace lxmax
 		}
 	}
 
-	size_t dmx_buffer::read(universe_address universe, channel_address channel, dmx_value* dst_buffer,
+	size_t dmx_buffer::read(t_universe_address universe, t_channel_address channel, t_dmx_value* dst_buffer,
 	                        size_t channel_count) const
 	{
-		if ((channel - 1) + channel_count > k_universe_length)
+		if ((channel - 1) + channel_count > LX_DMX_UNIVERSE_LENGTH)
 			return 0;
 
 		const auto& it = _universes.find(universe);

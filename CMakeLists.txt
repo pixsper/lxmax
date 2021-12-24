@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.19)
-project("lxmax")
+string(REGEX REPLACE "(.*)/" "" THIS_FOLDER_NAME "${CMAKE_CURRENT_SOURCE_DIR}")
+project(${THIS_FOLDER_NAME})
+
+include(source/max-sdk-base/script/max-package.cmake)
 
 if (APPLE)
     if (${CMAKE_GENERATOR} MATCHES "Xcode")
@@ -9,8 +12,7 @@ if (APPLE)
         elseif(${XCODE_VERSION} VERSION_GREATER_EQUAL 12)
             set(C74_BUILD_FAT YES)
         endif ()
-    elseif (${CMAKE_GENERATOR} MATCHES "Unix Makefiles")
-        # This is for the benefit of CLion which identifies as Unix Makefiles
+    else ()
         set(C74_BUILD_FAT YES)
     endif ()
 
@@ -24,22 +26,19 @@ if (APPLE)
     endif()
 endif()
 
-add_definitions("-std=c++17")
-
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
 
 if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
-  message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
-  file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/0.17.0/conan.cmake"
-                "${CMAKE_BINARY_DIR}/conan.cmake"
-                EXPECTED_HASH SHA256=3bef79da16c2e031dc429e1dac87a08b9226418b300ce004cc125a82687baeef
-                TLS_VERIFY ON)
+    message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
+    file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/0.18.1/conan.cmake"
+            "${CMAKE_BINARY_DIR}/conan.cmake"
+            TLS_VERIFY ON)
 endif()
 
 include(${CMAKE_BINARY_DIR}/conan.cmake)
 
-conan_cmake_configure(REQUIRES asio/1.21.0
+conan_cmake_configure(REQUIRES asio/1.28.0
                       GENERATORS cmake_find_package)
 
 conan_cmake_autodetect(settings)
@@ -50,6 +49,5 @@ conan_cmake_install(PATH_OR_REFERENCE .
                     SETTINGS ${settings})
 					
 find_package(asio)
-
 
 add_subdirectory(source)

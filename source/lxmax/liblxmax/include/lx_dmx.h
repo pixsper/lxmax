@@ -1,14 +1,14 @@
-// Copyright (c) 2021 Pixsper Ltd. All rights reserved.
+// Copyright (c) 2023 Pixsper Ltd. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 
 #pragma once
 
-#include "common.h"
+#include "lx_common.h"
 
 #include <limits.h>
 #include <stdint.h>
 
-#include "net.h"
+#include "lx_net.h"
 
 BEGIN_USING_C_LINKAGE
 
@@ -21,6 +21,10 @@ BEGIN_USING_C_LINKAGE
 #define LX_UNIVERSE_SACN_MAX 63999
 #define LX_PRIORITY_SACN_MIN 1
 #define LX_PRIORITY_SACN_MAX 200
+#define LX_UNIVERSE_DMXUSBPRO_MIN 1
+#define LX_UNIVERSE_DMXUSBPRO_MAX 2
+#define LX_UNIVERSE_OPENDMXUSB_MIN 1
+#define LX_UNIVERSE_OPENDMXUSB_MAX 1
 #define LX_DMX_FRAMERATE_MIN 0.1
 #define LX_DMX_FRAMERATE_MAX 44
 
@@ -29,10 +33,9 @@ BEGIN_USING_C_LINKAGE
 #define LX_DMX_24_BIT_MAX 16777215
 #define LX_DMX_32_BIT_MAX UINT_MAX
 
-typedef uint8_t dmx_value;
-typedef int universe_address;
-typedef int channel_address;
-typedef int local_channel_address;
+typedef uint8_t t_dmx_value;
+typedef t_atom_long t_universe_address;
+typedef t_atom_long t_channel_address;
 
 typedef enum _lx_dmx_ip_protocol
 {

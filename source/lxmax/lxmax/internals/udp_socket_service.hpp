@@ -1,10 +1,11 @@
-// Copyright (c) 2021 Pixsper Ltd. All rights reserved.
+// Copyright (c) 2023 Pixsper Ltd. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 
 #pragma once
 
 #include <array>
 #include <functional>
+#include <vector>
 #include <asio.hpp>
 
 namespace lxmax

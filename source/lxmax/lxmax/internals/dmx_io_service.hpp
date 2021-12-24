@@ -1,145 +1,51 @@
-// Copyright (c) 2021 Pixsper Ltd. All rights reserved.
+// Copyright (c) 2023 Pixsper Ltd. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 
 #pragma once
 
+#include <memory>
 #include <mutex>
 #include <unordered_map>
 #include <unordered_set>
 #include <asio.hpp>
 
-#include "dmx.hpp"
-#include "universe_config.hpp"
+#include "lx_dmx.h"
+#include "lx_universe_config.h"
 #include "udp_socket_service.hpp"
 
 #include "dmx_buffer.hpp"
-#include "packets/dmx_packet_artnet.hpp"
-#include "packets/dmx_packet_sacn.hpp"
+#include "dmx_io_protocol.hpp"
+#include "protocols/dmx_sacn_io_protocol.hpp"
 
 namespace lxmax
 {
-	using asio::ip::udp;
-
 	class dmx_io_service
 	{
-		asio::io_service& _io_service;
+		asio::io_context _io_context;
+		asio::any_io_executor _io_context_work;
 
 		std::mutex _mutex;
-		std::unordered_map <udp::endpoint, udp_socket_service> _sockets;
 		dmx_buffer _input_buffer;
 		dmx_buffer _output_buffer;
 
+		std::unordered_map<e_lx_universe_protocol, std::unique_ptr<dmx_io_protocol>> _protocols;
+
 	public:
-		dmx_io_service(asio::io_service& io_service)
-			: _io_service(io_service)
-		{
-			
-		}
+		~dmx_io_service();
 
-		void set_universes(t_linklist* universes)
-		{
-			std::lock_guard lock(_mutex);
+		void run();
 
-			std::set<universe_address> input_universe_addresses;
-			std::set<universe_address> output_universe_addresses;
+		void stop();
 
-			std::unordered_set<udp::endpoint> local_endpoints;
+		void set_universes(t_hashtab* universes, t_lx_network_adapter* global_artnet_adapter, t_lx_network_adapter* global_sacn_adapter);
 
-			t_lx_universe_config* config = (t_lx_universe_config*)linklist_getindex(universes, 0);
-			while (config)
-			{
-				switch (config->type)
-				{
-					
-					case LX_UNIVERSE_TYPE_INPUT:
-						input_universe_addresses.insert((universe_address)config->internal_universe);
-						switch(config->protocol)
-						{
-							case LX_UNIVERSE_PROTOCOL_ARTNET:
-								break;
+		void write(t_universe_address universe, t_channel_address channel, const t_dmx_value* src_buffer, size_t channel_count);
 
-							case LX_UNIVERSE_PROTOCOL_SACN:
-								break;
+		size_t read(t_universe_address universe, t_channel_address channel, t_dmx_value* dst_buffer, size_t channel_count) const;
 
-							case LX_UNIVERSE_PROTOCOL_NONE:
-							default:
-								break;
-						}
-						break;
-
-					case LX_UNIVERSE_TYPE_OUTPUT:
-						output_universe_addresses.insert((universe_address)config->internal_universe);
-						break;
-
-					case LX_UNIVERSE_TYPE_NONE:
-					default:
-						break;
-				}
-
-
-				linklist_next(universes, config, (void**)&config);
-			}
-
-			_input_buffer.resize(input_universe_addresses);
-
-			auto it = std::cbegin(_sockets);
-			while(it != std::cend(_sockets))
-			{
-				if (local_endpoints.find(it->first) == std::cend(local_endpoints))
-					it = _sockets.erase(it);
-				else
-					++it;
-			}
-
-			for(const auto& e : local_endpoints)
-			{
-				if (_sockets.find(e) == std::cend(_sockets))
-				{
-					udp_receive_callback callback;
-
-					switch(e.port())
-					{
-						case k_artnet_port:
-							callback = [this](const udp::endpoint& remote_endpoint, const udp_receive_buffer& buffer, size_t length)
-							{
-								handle_received_packet_artnet(remote_endpoint, buffer, length);
-							};
-							break;
-
-						case k_sacn_port:
-							callback = [this](const udp::endpoint& remote_endpoint, const udp_receive_buffer& buffer, size_t length)
-							{
-								handle_received_packet_sacn(remote_endpoint, buffer, length);
-							};
-							break;
-
-						default:
-							break;
-					}
-
-					_sockets.emplace(e, udp_socket_service(_io_service, e, callback));
-				}
-			}
-		}
-
-		void process_io()
-		{
-			std::lock_guard lock(_mutex);
-		}
+		void process_io();
 
 	private:
-
-		void handle_received_packet_artnet(const udp::endpoint& remote_endpoint, const udp_receive_buffer& buffer, size_t length)
-		{
-			
-		}
-
-		void handle_received_packet_sacn(const udp::endpoint& remote_endpoint, const udp_receive_buffer& buffer, size_t length)
-		{
-
-		}
-
-
-		
+		void dmx_received(e_lx_dmx_ip_protocol, t_universe_address, t_dmx_value*, size_t);
 	};
 }

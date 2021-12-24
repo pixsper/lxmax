@@ -10,8 +10,16 @@ include_directories(
 )
 
 set(PROJECT_SRC
-		"lx.service.cpp"
+		"${LXMAX_COMMON_INCLUDES}/lx_common_syms.c"
 		"${MAX_SDK_INCLUDES}/common/commonsyms.c"
+		"lx.service.cpp"
+		"internals/dmx_buffer.cpp"
+		"internals/dmx_io_protocol.cpp"
+		"internals/dmx_io_service.cpp"
+        "internals/udp_socket_service.cpp"
+		"internals/protocols/dmx_artnet_io_protocol.cpp"
+		"internals/protocols/dmx_sacn_io_protocol.cpp"
+
 )
 
 add_library(

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Pixsper Ltd. All rights reserved.
+// Copyright (c) 2023 Pixsper Ltd. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 
 #pragma once
@@ -6,7 +6,7 @@
 #include <cstdint>
 #include <vector>
 
-#include "dmx.hpp"
+#include "lx_dmx.h"
 #include "endian_ints.hpp"
 
 namespace lxmax
@@ -54,14 +54,14 @@ namespace lxmax
 
 		dmx_packet_artnet() = default;
 
-		dmx_packet_artnet(universe_address address, uint8_t sequence, const universe_buffer& data)
+		dmx_packet_artnet(t_universe_address address, uint8_t sequence, const std::array<t_dmx_value, 512>& data)
 			: dmx_channels(data.size())
 		{
 			header.sub_uni = address & 0x00FF;
 			header.net = (address & 0x7F00) >> 8;
 			header.sequence = sequence;
-			header.length = k_universe_length;
-			memcpy(dmx_channels.data(), data.data(), std::min(data.size(), dmx_channels.size()));
+			header.length = LX_DMX_UNIVERSE_LENGTH;
+			memcpy(dmx_channels.data(), data.data(), MIN(data.size(), dmx_channels.size()));
 		}
 
 		static bool deserialize(char* data, size_t length, dmx_packet_artnet& packet) noexcept

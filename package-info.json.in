@@ -1,0 +1,28 @@
+{
+	"name" : "@C74_PACKAGE_NAME@",
+	"displayname" : "LXMax",
+	"version" : "@GIT_VERSION_MAJ@.@GIT_VERSION_MIN@.@GIT_VERSION_SUB@",
+	"author" : "Pixsper",
+	"description" : "DMX lighting control extensions for Max",
+	"tags" : [  ],
+	"website" : "https://www.github.com/pixsper/lxmax",
+	"extends" : "",
+	"extensible" : 0,
+	"max_version_min" : "8.2.0",
+	"max_version_max" : "none",
+	"os" : 	{
+		"macintosh" : {
+		    "platform" : [ "x64", "arm64" ],
+		    "min_version" : "10.11.x"
+        },
+        "windows" : {
+        	"platform" : [ "x64" ],
+        	"min_version" : "7"
+        }
+	},
+	"eexclude_from_collectives" : "yes",
+	"package_extra" : 	{
+		"reverse_domain" : "com.pixsper",
+		"copyright" : "Copyright (c) 2023 Pixsper Ltd."
+	}
+}
